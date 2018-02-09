@@ -47,7 +47,7 @@ namespace Pong
 
         //constants used to set size and speed of ball 
         const int BALL_SIZE = 10;
-        const int BALL_SPEED = 4;
+        int BALL_SPEED = 4;
 
         //player scores
         int player1Score = 0;
@@ -150,6 +150,8 @@ namespace Pong
 
             gameUpdateLoop.Start();
             newGameOk = false;
+
+            this.BackColor = Color.Blue;
         }
 
         /// <summary>
@@ -169,7 +171,7 @@ namespace Pong
                 paddle1X = PADDLE_EDGE;
                 paddle2X = this.Width - PADDLE_EDGE - PADDLE_WIDTH;
             }
-
+            BALL_SPEED = 4;
             ballX = this.Width / 2; ballY = this.Height / 2;        
         }
 
@@ -260,12 +262,12 @@ namespace Pong
                 score.Play();
                 player2Score++;
 
-                if (player2Score >= 2)
+                if (player2Score >= gameWinScore)
                 {
                     GameOver("Player 2 Win!");
                     score.Stop();
                 }
-                else if (player2Score < 2) { ballMoveRight = true; SetParameters(); }
+                else if (player2Score < gameWinScore) { ballMoveRight = true; BALL_SPEED++; SetParameters(); }
             }
 
             if (ballX + BALL_SIZE > this.Width)  // TODO ball hits right wall logic
@@ -273,12 +275,12 @@ namespace Pong
                 score.Play();
                 player1Score++;
 
-                if (player1Score >= 2)
+                if (player1Score >= gameWinScore)
                 {
                     GameOver("Player 1 Win!");
                     score.Stop();
                 }
-                else if (player1Score < 2) { ballMoveRight = false; SetParameters(); }
+                else if (player1Score < gameWinScore) { ballMoveRight = false; BALL_SPEED++; SetParameters(); }
             }
 
             // TODO same as above but this time check for collision with the right wall
